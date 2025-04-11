@@ -1,1 +1,1 @@
-# dlfinalproject2025
+# CSCI1470 Deep Learning Final Project

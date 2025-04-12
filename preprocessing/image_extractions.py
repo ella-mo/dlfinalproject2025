@@ -1,3 +1,7 @@
+"""
+This file extracts file data from NWB file and saves it to a csv
+"""
+
 #!/usr/bin/env python
 import sys
 import os

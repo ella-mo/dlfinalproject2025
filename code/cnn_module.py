@@ -4,7 +4,7 @@ import random
 
 from cnn_module import CNNModule
 
-class CNNModule:
+class CNNModule(tf.keras.Model):
     def __init__(self, config):
         self.layers = config.get("layers", 1)
         self.filters = config.get("filters", 32)

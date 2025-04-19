@@ -8,9 +8,6 @@ from cnn_module import CNNModule
 SAMPLE_SPACE_SIZE = 50 # how many CNN modules to generate
 
 
-
-
-
 def generate_random_cnn_module():
     num_layers = random.choice([1, 2, 3])
     filters = random.choice([16, 32, 64])
@@ -28,10 +25,19 @@ def generate_random_cnn_module():
         "threshold": threshold
     })
 
-def train_module(module, inputs):
-    module.forward(inputs)
+def train_module(module, inputs, input_labels):
+        
+    module.compile(
+        optimizer='adam',
+        loss='sparse_categorical_crossentropy',
+        metrics=['accuracy'])
+    
+    module.fit(x = inputs, y = input_labels, batch_size=32, epochs=10)
+    #module.save(f'module_{1:03d}.keras')
+
 
 for i in range(SAMPLE_SPACE_SIZE):
 
     curr_module = generate_random_cnn_module()
-    train_module()
+    train_module(curr_module,...,...)
+    curr_module.save(f'module_{1:03d}.keras')

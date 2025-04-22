@@ -5,11 +5,6 @@ import random
 
 from cnn_module import CNNModule
 
-
-
-
-
-
 class HMOModel(tf.keras.Model):
    def __init__(self, cnns):
        super().__init__()

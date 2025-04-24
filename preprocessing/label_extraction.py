@@ -9,22 +9,22 @@ import tempfile
 import subprocess
 
 # === PATHS ===
-csv_path = r"C:\Users\Taher Vahanvaty\Documents\csci1470\fp\face.csv"
-zip_dir = r"C:\Users\Taher Vahanvaty\Documents\csci1470\fp"
-output_path = r"C:\Users\Taher Vahanvaty\Documents\csci1470\fp\cifar_batch_graypad.pkl"
+csv_path = r"..."
+zip_dir = r"..."
+output_path = r"..."
 target_size = (224, 224)  # Target output size (square)
 
 # === EXTRACT SPLIT ZIP ===
 with tempfile.TemporaryDirectory() as tmpdir:
-    print("🔓 Extracting split ZIP archive with 7z...")
+    print("Extracting split ZIP archive with 7z...")
     zip_path = os.path.join(zip_dir, "Stimuli.zip")
     result = subprocess.run(["7z", "x", zip_path, f"-o{tmpdir}"], capture_output=True, text=True)
     
     if result.returncode != 0:
-        print("❌ 7z extraction failed:", result.stderr)
+        print("7z extraction failed:", result.stderr)
         exit(1)
 
-    print("✅ Extraction complete")
+    print("Extraction complete")
 
     # === READ FACE IMAGE LIST ===
     face_df = pd.read_csv(csv_path)
@@ -66,9 +66,9 @@ with tempfile.TemporaryDirectory() as tmpdir:
             labels.append(label_map[label])
             filenames.append(filename)
 
-            print(f"{'✅' if label == 'face' else '🟡'} {filename}")
+            print(f"Done: {filename}")
         except Exception as e:
-            print(f"❌ Failed to process {file}: {e}")
+            print(f"Failed to process {file}: {e}")
 
 # === SAVE AS PICKLE ===
 cifar_dict = {
@@ -80,4 +80,4 @@ cifar_dict = {
 with open(output_path, 'wb') as f:
     pickle.dump(cifar_dict, f)
 
-print(f"✅ Saved {len(data)} padded, labeled images to {output_path}")
+print(f"Saved {len(data)} padded, labeled images to {output_path}")

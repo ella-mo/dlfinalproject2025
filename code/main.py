@@ -12,22 +12,37 @@ from resnet_pre import get_data
 # 1: get data ------------------------------------------------------
 
 
-images = ...
-image_labels = ...
+# images = ...
+# image_labels = ...
 
 
-TRAIN_FILE = '/Users/pkj/Desktop/resnet_data/train'
-TEST_FILE = '/Users/pkj/Desktop/resnet_data/test'
+# TRAIN_FILE = '/Users/pkj/Desktop/resnet_data/train'
+# TEST_FILE = '/Users/pkj/Desktop/resnet_data/test'
 
 
-classes = [3,5]
+# classes = [3,5]
 
 
-train_inputs, train_labels = get_data(TRAIN_FILE, classes)
-test_inputs, test_labels = get_data(TEST_FILE, classes)
+# train_inputs, train_labels = get_data(TRAIN_FILE, classes)
+# test_inputs, test_labels = get_data(TEST_FILE, classes)
 
 
-print(train_labels.shape)
+# print(train_labels.shape)
+
+from sklearn.model_selection import train_test_split
+
+# Get all data
+all_inputs, all_labels = get_data(r'C:\Users\Taher Vahanvaty\Documents\csci1470\dlfinalproject2025\data\cifar_batch_graypad.pkl')
+
+# Split into train/test
+train_inputs, test_inputs, train_labels, test_labels = train_test_split(
+    all_inputs, all_labels, test_size=0.2, stratify=all_labels.argmax(axis=1), random_state=42
+)
+
+# Optional sanity checks
+print("Train shape:", train_inputs.shape, train_labels.shape)
+print("Test shape:", test_inputs.shape, test_labels.shape)
+
 
 
 # 2: train CNNs and choose the best ones ------------------------------------------------------

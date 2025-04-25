@@ -11,9 +11,9 @@ import subprocess
 # === PATHS ===
 username = r"..."  # replace if your OSCAR username is different
 
-csv_path = f"/users/{username}/dlfinalproject2025/preprocessing/face.csv"
-zip_dir = f"/gpfs/scratch/{username}/Stimuli"  # contains Stimuli.z01 and Stimuli.zip
-output_path = f"/gpfs/scratch/{username}/cifar_batch_graypad.pkl"
+csv_path = f"preprocessing/face.csv"
+zip_dir = f"preprocessing"  # contains Stimuli.z01 and Stimuli.zip
+output_path = f"cifar_batch_graypad.pkl"
 target_size = (224, 224)  # Target output size (square)
 
 # === EXTRACT SPLIT ZIP ===

@@ -15,7 +15,7 @@ class CNNModule(tf.keras.Model):
        self.kernel_size = config.get("kernel_size", 3)
        self.pool = config.get("pool", "max")
        self.normalize = config.get("normalize", False)
-       self.threshold = config.get("threshold", 0.5)
+    #    self.threshold = config.get("threshold", 0.5)
 
 
        self.conv_layers = []
@@ -27,11 +27,11 @@ class CNNModule(tf.keras.Model):
 
        for i in range(self.num_layers):
            self.conv_layers.append(tf.keras.layers.Conv2D(self.filters, self.kernel_size, padding='same'))
-           self.conv_layers.append(tf.keras.layers.ReLU(threshold=self.threshold))
+           self.conv_layers.append(tf.keras.layers.ReLU())
            if self.pool == 'max':
                self.conv_layers.append(tf.keras.layers.MaxPooling2D())
            else:
-               self.conv_layers.append(tf.keras.layers.AveragePooling2D())
+               self.conv_layers.append(tf.keras.layers.AveragePooling2D(pool_size=(3,3)))
            if self.normalize:
                self.conv_layers.append(tf.keras.layers.LayerNormalization())
 

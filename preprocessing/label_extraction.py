@@ -9,11 +9,11 @@ import tempfile
 import subprocess
 
 # === PATHS ===
-username = r"..."  # replace if your OSCAR username is different
+# username = r"..."  # replace if your OSCAR username is different
 
-csv_path = f"/users/{username}/dlfinalproject2025/preprocessing/face.csv"
-zip_dir = f"/gpfs/scratch/{username}/Stimuli"  # contains Stimuli.z01 and Stimuli.zip
-output_path = f"/gpfs/scratch/{username}/cifar_batch_graypad.pkl"
+csv_path = r"C:\Users\Taher Vahanvaty\Documents\csci1470\dlfinalproject2025\preprocessing\face.csv"
+zip_dir = r"C:\Users\Taher Vahanvaty\Documents\csci1470\dlfinalproject2025\preprocessing"  # contains Stimuli.z01 and Stimuli.zip
+output_path = r"C:\Users\Taher Vahanvaty\Documents\csci1470\dlfinalproject2025\preprocessing\cifar_batch_graypad.pkl"
 target_size = (224, 224)  # Target output size (square)
 
 # === EXTRACT SPLIT ZIP ===
@@ -36,9 +36,14 @@ with tempfile.TemporaryDirectory() as tmpdir:
     label_map = {'non_face': 0, 'face': 1}
 
     # === CONTAINERS ===
-    data = []
-    labels = []
-    filenames = []
+    face_data = []
+    face_labels = []
+    face_filenames = []
+
+    nonface_data = []
+    nonface_labels = []
+    nonface_filenames = []
+
 
     def resize_and_pad(img, size, fill=(128, 128, 128)):
         img.thumbnail(size, Image.Resampling.LANCZOS)
@@ -64,22 +69,48 @@ with tempfile.TemporaryDirectory() as tmpdir:
             filename = os.path.basename(file).lower()
             label = 'face' if filename in face_images else 'non_face'
 
-            data.append(img_np)
-            labels.append(label_map[label])
-            filenames.append(filename)
-
+            if label == 'face':
+                face_data.append(img_np)
+                face_labels.append(1)
+                face_filenames.append(filename)
+            else:
+                nonface_data.append(img_np)
+                nonface_labels.append(0)
+                nonface_filenames.append(filename)
             print(f"Done: {filename}")
         except Exception as e:
             print(f"Failed to process {file}: {e}")
 
+min_class_size = min(len(face_data), len(nonface_data))
+print(f"Balancing to {min_class_size} examples per class...")
+
+# Randomly pick min_class_size from both
+face_indices = np.random.choice(len(face_data), min_class_size, replace=False)
+nonface_indices = np.random.choice(len(nonface_data), min_class_size, replace=False)
+
+balanced_data = np.concatenate([
+    np.array(face_data)[face_indices],
+    np.array(nonface_data)[nonface_indices]
+], axis=0)
+
+balanced_labels = np.concatenate([
+    np.array(face_labels)[face_indices],
+    np.array(nonface_labels)[nonface_indices]
+], axis=0)
+
+balanced_filenames = (
+    np.array(face_filenames)[face_indices].tolist() +
+    np.array(nonface_filenames)[nonface_indices].tolist()
+)
+
 # === SAVE AS PICKLE ===
 cifar_dict = {
-    b'data': np.stack(data),
-    b'labels': labels,
-    b'filenames': filenames
+    b'data': balanced_data,
+    b'labels': balanced_labels.tolist(),
+    b'filenames': balanced_filenames
 }
 
 with open(output_path, 'wb') as f:
     pickle.dump(cifar_dict, f)
 
-print(f"Saved {len(data)} padded, labeled images to {output_path}")
+print(f"Saved {len(balanced_data)} balanced, padded, labeled images to {output_path}")

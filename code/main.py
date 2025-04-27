@@ -32,7 +32,7 @@ from resnet_pre import get_data
 from sklearn.model_selection import train_test_split
 
 # Get all data
-all_inputs, all_labels = get_data(r'C:\Users\Taher Vahanvaty\Documents\csci1470\dlfinalproject2025\data\cifar_batch_graypad.pkl')
+all_inputs, all_labels = get_data(r'C:\Users\Taher Vahanvaty\Documents\csci1470\dlfinalproject2025\preprocessing\cifar_batch_graypad_trial.pkl')
 
 # Split into train/test
 train_inputs, test_inputs, train_labels, test_labels = train_test_split(
@@ -53,7 +53,7 @@ accuracy_list = get_best_cnns(train_inputs, train_labels, test_inputs, test_labe
 
 
 print("ACC LIST:")
-print(acc)
+print(accuracy_list)
 
 
 # 3: combine CNNs into HMO model ------------------------------------------------------
@@ -95,7 +95,7 @@ model.fit(
    x=train_inputs,         # training images, shape (num_samples, height, width, channels)
    y=train_labels,   # labels, shape (num_samples, size of classification problem)
    batch_size=32,
-   epochs=5
+   epochs=1
 )
 
 
@@ -103,6 +103,15 @@ model.evaluate(
    x=test_inputs,
    y=test_labels
 )
+
+cnn_features = []
+for img in test_inputs:
+   act = model.extract_features(img[None, ...], layer="layer2")  # shape: (1, 8, 8, N)
+   pooled = tf.reduce_mean(act, axis=[1, 2])  # shape: (1, N), global average pool
+   cnn_features.append(pooled.numpy().squeeze())  # (N,)
+   pct_active = model.percent_active_units(act)
+   print(f"{pct_active:.2f}% of layer2 units are active for this image.")
+cnn_features = np.stack(cnn_features)  # shape: (num_images, N)
 
 
 model.save("models/MAIN_MODEL.keras")

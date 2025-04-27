@@ -1,6 +1,8 @@
 import numpy as np
 import tensorflow as tf
 import random
+import os
+
 
 
 from cnn_module import CNNModule
@@ -44,7 +46,7 @@ def train_module(module, inputs, input_labels, test_inputs, test_labels):
        loss='categorical_crossentropy',
        metrics=['accuracy'])
   
-   module.fit(x = inputs, y = input_labels, batch_size=32, epochs=5)
+   module.fit(x = inputs, y = input_labels, batch_size=32, epochs=1)
 
 
    loss, accuracy = module.evaluate(x = test_inputs, y = test_labels)
@@ -75,6 +77,7 @@ def get_best_cnns(inputs, input_labels, test_inputs, test_labels):
 
 
        print("saving model " + str(i) + ".")
+       os.makedirs("models", exist_ok=True)  # This will create the folder if it doesn't exist
        features = curr_module.get_conv_layers()
        features.save(f'models/module_{i:03d}.keras')
        print("model " + str(i) + " saved.")

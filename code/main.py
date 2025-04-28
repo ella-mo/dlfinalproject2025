@@ -11,7 +11,7 @@ from sklearn.model_selection import train_test_split
 # Get all data
 #all_inputs, all_labels = get_data(r'C:\Users\Taher Vahanvaty\Documents\csci1470\dlfinalproject2025\preprocessing\cifar_batch_graypad_trial.pkl')
 
-all_inputs, all_labels = get_data("/Users/pkj/Desktop/cifar_batch_graypad_trial.pkl")
+all_inputs, all_labels = get_data("../cifar_batch_graypad_trial.pkl")
 
 # Split into train/test
 train_inputs, test_inputs, train_labels, test_labels = train_test_split(

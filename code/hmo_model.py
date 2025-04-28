@@ -22,7 +22,7 @@ class HMOModel(tf.keras.Model):
   
        self.image_shape = (8,8)
   
-   def call(self, image):
+   def call(self, image, return_features=False):
        out_tensors = []
        for cnn in self.layer1:
            output = cnn(image)
@@ -55,13 +55,13 @@ class HMOModel(tf.keras.Model):
 
 
        lay4in = tf.concat(out_tensors, axis=3)
+ 
+       dense_features = self.dense(self.global_pool(lay4in))
 
+       if return_features:
+           return dense_features
 
-
-
-
-
-       return self.classify(self.dense(self.global_pool(lay4in)))
+       return self.classify(dense_features)
 
 
 

@@ -81,6 +81,7 @@ def get_data(file_path) -> tuple[np.ndarray, np.ndarray]:
 
     inputs = np.array(unpickled_file[b'data'])  # shape: (N, 224, 224, 3) or (N, C*H*W)
     labels = np.array(unpickled_file[b'labels'])
+    filenames = np.array(unpickled_file[b'filenames'])
 
     # If images are saved flattened, unflatten them
     if len(inputs.shape) == 2:
@@ -89,4 +90,4 @@ def get_data(file_path) -> tuple[np.ndarray, np.ndarray]:
     inputs = inputs.astype(np.float32) / 255.0
     labels = tf.one_hot(labels, 2).numpy()  # Change '2' if using more than 2 classes
 
-    return inputs, labels
+    return inputs, labels, filenames

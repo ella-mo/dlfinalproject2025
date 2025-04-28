@@ -25,7 +25,7 @@ class HMOModel(tf.keras.Model):
    def call(self, image):
        out_tensors = []
        for cnn in self.layer1:
-           output = cnn(image, classify=False)
+           output = cnn(image)
            output = tf.image.resize(output, self.image_shape)
 
 

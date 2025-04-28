@@ -84,7 +84,7 @@ def get_data(file_path) -> tuple[np.ndarray, np.ndarray]:
 
     # If images are saved flattened, unflatten them
     if len(inputs.shape) == 2:
-        inputs = inputs.reshape(-1, 3, 224, 224).transpose(0, 2, 3, 1)
+        inputs = inputs.reshape(-1, 3, 112, 112).transpose(0, 2, 3, 1)
 
     inputs = inputs.astype(np.float32) / 255.0
     labels = tf.one_hot(labels, 2).numpy()  # Change '2' if using more than 2 classes

@@ -9,8 +9,10 @@ from resnet_pre import get_data
 from sklearn.model_selection import train_test_split
 
 # # Get all data
-all_inputs, all_labels = get_data(r'C:\Users\Taher Vahanvaty\Documents\csci1470\dlfinalproject2025\preprocessing\cifar_batch_graypad_trial.pkl')
+#all_inputs, all_labels = get_data(r'C:\Users\Taher Vahanvaty\Documents\csci1470\dlfinalproject2025\preprocessing\cifar_batch_graypad_trial.pkl')
 
+
+all_inputs, all_labels = get_data("/Users/pkj/Desktop/cifar_batch_graypad_trial.pkl")
 # # Split into train/test
 train_inputs, test_inputs, train_labels, test_labels = train_test_split(
     all_inputs, all_labels, test_size=0.2, stratify=all_labels.argmax(axis=1), random_state=42
@@ -38,7 +40,7 @@ test_dataset = test_dataset.batch(32).prefetch(tf.data.AUTOTUNE)
 
 # 3: Combine CNNs into HMO model ------------------------------------------------------
 
-with open("path/to/accuracy_list.txt", "r") as f:
+with open("accuracy.txt", "r") as f:
     accuracy_list_string = f.read()
 
 # Parse into list of floats
@@ -52,18 +54,18 @@ for i in top_10CNNs:
     # Step 1: Load the saved keras model
     saved_model = tf.keras.models.load_model(f'models/module_{i:03d}.keras')
     
-    # Step 2: Create a fresh CNNModule
-    new_cnn = CNNModule(config={})  # or supply the correct config if needed
+    # # Step 2: Create a fresh CNNModule
+    # new_cnn = CNNModule(config={})  # or supply the correct config if needed
     
-    # Step 3: Build the new_cnn by calling it once (required before setting weights)
-    dummy_input = tf.zeros((1, 224, 224, 3))  # or whatever your input size is
-    new_cnn(dummy_input)
+    # # Step 3: Build the new_cnn by calling it once (required before setting weights)
+    # dummy_input = tf.zeros((1, 224, 224, 3))  # or whatever your input size is
+    # new_cnn(dummy_input)
     
-    # Step 4: Copy weights from saved model to fresh CNNModule
-    new_cnn.set_weights(saved_model.get_weights())
+    # # Step 4: Copy weights from saved model to fresh CNNModule
+    # new_cnn.set_weights(saved_model.get_weights())
     
     # Step 5: Append to list
-    cnn_list.append(new_cnn)
+    cnn_list.append(saved_model)
 
 
 for i in range(20):

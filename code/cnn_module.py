@@ -7,9 +7,6 @@ class CNNModule(tf.keras.Model):
    def __init__(self, config):
        super().__init__()
 
-
-
-
        self.num_layers = config.get("layers", 1)
        self.filters = config.get("filters", 32)
        self.kernel_size = config.get("kernel_size", 3)
@@ -31,7 +28,7 @@ class CNNModule(tf.keras.Model):
            if self.pool == 'max':
                self.conv_layers.append(tf.keras.layers.MaxPooling2D())
            else:
-               self.conv_layers.append(tf.keras.layers.AveragePooling2D(pool_size=(3,3)))
+               self.conv_layers.append(tf.keras.layers.AveragePooling2D(pool_size=(2,2)))
            if self.normalize:
                self.conv_layers.append(tf.keras.layers.LayerNormalization())
 

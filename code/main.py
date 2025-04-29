@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns           
 from scipy.spatial.distance import pdist, squareform 
 from scipy.stats import spearmanr
+import pandas as pd
 
 # Get all data
 #all_inputs, all_labels = get_data(r'C:\Users\Taher Vahanvaty\Documents\csci1470\dlfinalproject2025\preprocessing\cifar_batch_graypad_trial.pkl')
@@ -103,35 +104,64 @@ model.evaluate(
     x=test_dataset
 )
 
+# Step 1: Load and clean neural data
+neural_data_df = pd.read_csv('../combinedAIT.csv')
+neural_data_df['image_path'] = neural_data_df['image_path'].str.replace('Stimuli/', '', regex=False)
+available_neural_paths = set(neural_data_df['image_path'])
+
+# 2. Find which test images have neural data
+available_test = set(test_filenames).intersection(available_neural_paths)
+
+# 3. Build filtered arrays manually
+filtered_inputs = []
+filtered_labels = []
+filtered_filenames = []
+
+for inp, lbl, fname in zip(test_inputs, test_labels, test_filenames):
+    if fname in available_test:
+        filtered_inputs.append(inp)
+        filtered_labels.append(lbl)
+        filtered_filenames.append(fname)
+
+filtered_inputs = np.array(filtered_inputs)
+filtered_labels = np.array(filtered_labels)
+filtered_filenames = np.array(filtered_filenames)
+
+# 4. Build tf.data.Dataset from filtered arrays
+test_dataset = tf.data.Dataset.from_tensor_slices((filtered_inputs, filtered_labels, filtered_filenames))
+test_dataset = test_dataset.batch(32).prefetch(tf.data.AUTOTUNE)
+
 features = []
+matched_filenames = []
 
-for batch_images, _ in test_dataset:
-    batch_features = model(batch_images, return_features=True)  # (batch_size, 1250)
-    features.append(batch_features.numpy())  # save the batch outputs
+for batch_images, batch_labels, batch_filenames in test_dataset:
+    batch_features = model(batch_images, return_features=True)
+    features.append(batch_features.numpy())
+    batch_filenames = [f.numpy().decode('utf-8') for f in batch_filenames]
+    matched_filenames.extend(batch_filenames)
 
-# After loop: stack all batches into one big array
-cnn_features = np.vstack(features)  # (num_test_images, 1250)
+cnn_features_matched = np.vstack(features)
 
-# Now you can compute RDM
-cnn_rdm = compute_rdm(cnn_features, metric="correlation")
-plot_rdm(cnn_rdm, title="CNN RDM")
-print(cnn_rdm)
+# Filter neural data using matched filenames
+filtered_df = neural_data_df.set_index('image_path').loc[matched_filenames].reset_index()
+neural_features = filtered_df.drop(columns=['image_path']).to_numpy()
 
-"""neural_data_df = pd.read_csv('neural_data.csv')
+neural_features = np.nan_to_num(neural_features, nan=0.0)
 
-# code to get the images we want based on the filename
-filtered_df = neural_data_df[neural_data_df['img_id'].isin(test_filenames)]
-
-# Step 2: Reorder according to test_filenames
-# First set img_id as index so we can use .loc
-filtered_df = filtered_df.set_index('img_id').loc[test_filenames].reset_index()
-
-# Step 3: Drop the 'img_id' column and get a NumPy array of neural features
-neural_features = filtered_df.drop(columns=['img_id']).to_numpy()
+# Compute RDMs
+cnn_rdm = compute_rdm(cnn_features_matched, metric="correlation")
+plot_rdm(cnn_rdm, title="CNN RDM (matched to neural data)")
 
 neural_rdm = compute_rdm(neural_features, metric="correlation")
+plot_rdm(neural_rdm, title="Neural RDM (matched to neural data)")
+
+print("CNN RDM min/max:", np.min(cnn_rdm), np.max(cnn_rdm))
+print("Neural RDM min/max:", np.min(neural_rdm), np.max(neural_rdm))
 
 similarity = compare_rdms(cnn_rdm, neural_rdm)
-print("Spearman correlation CNN-IT:", similarity) """
+
+print(f"Matched {len(matched_filenames)} test images with neural data.")
+print("Similarity:", similarity)
 
 model.save("models/MAIN_MODEL.keras")
+

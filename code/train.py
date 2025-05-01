@@ -6,7 +6,7 @@ import os
 
 from cnn_module import CNNModule
 
-SAMPLE_SPACE_SIZE = 15  # how many CNN modules to generate
+SAMPLE_SPACE_SIZE = 200  # how many CNN modules to generate
 
 def generate_random_cnn_module():
     num_layers = random.choice([1, 2, 3])

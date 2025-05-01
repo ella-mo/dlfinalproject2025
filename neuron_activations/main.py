@@ -54,12 +54,30 @@ def process_all_sessions():
         if region not in ["CIT", "AIT"]:
             print(f"[!] Region {region} for {session_id} is not CIT or AIT, skipping.")
             continue
+        
+        # === Before calling anything, set up all paths
+        fixation_csv = f"../fixations/{session_id}_fixation_data.csv"
+        raster_csv = f"../rasters/{session_id}_raster_data.npy"
+        region_folder = f"../neuron_maps/{region}"
+        os.makedirs(region_folder, exist_ok=True)
+        output_csv = os.path.join(region_folder, f"{session_id}_matrix_neurons_by_image.csv")
 
-        # 1. Extract fixations
-        subprocess.run(["python", "fixation_extractions.py", nwb_image_path, session_id], check=True)
+        # 1. Extract fixations if not already done
+        if not os.path.exists(fixation_csv):
+            subprocess.run(["python", "fixation_extractions.py", nwb_image_path, session_id], check=True)
+        else:
+            print(f"✅ Fixations already exist for {session_id}, skipping.")
 
-        # 2. Extract rasters
-        subprocess.run(["python", "raster_extractions.py", nwb_raster_path, session_id], check=True)
+        # 2. Extract rasters if not already done
+        if not os.path.exists(raster_csv):
+            subprocess.run(["python", "raster_extractions.py", nwb_raster_path, session_id], check=True)
+        else:
+            print(f"✅ Rasters already exist for {session_id}, skipping.")
+        
+        # ✅ Skip session if final output file already exists
+        if os.path.exists(output_csv):
+            print(f"✅ Already processed {session_id}, skipping.")
+            continue
 
         # 3. Map fixations to rasters and save in correct region folder
         fixation_csv = f"../fixations/{session_id}_fixation_data.csv"

@@ -7,6 +7,8 @@ By Ella, Patrick, and Taha
 # 000628 
 This folder holds a few .nwb files from the data paper in sub-folders, which are the monkeys from which the fixation and raster data was obtained from. 
 
+# AI_use
+contains AI use transcripts
 # code
 
 
@@ -43,9 +45,6 @@ visualization.py creates heatmaps to visualize the un-normalized neuron maps.
 
 # accuracy_list.txt, accuracy.txt
 contains the list of accuracies from running /code with a sample size of 20 and 200 CNN modules.
-
-# AI_use.md
-contains links for AI use transcripts.
 
 # bank_array_regions.csv
 This is taken directly from the data paper. This was used for /neuron_activations so as to only preprocess .nwb files that had neuronal data from areas CIT or AIT. Note: we ultimately only used data from area AIT. 

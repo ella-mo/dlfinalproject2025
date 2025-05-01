@@ -4,3 +4,6 @@
 /preprocessing/raw_images
 /preprocessing/preprocessed_raster_data.csv
 /preprocessing/converted_images
+/rasters
+preprocessing/csv_files/sub-Bf_ses-20211114T152023_raster_data.csv
+preprocessing/csv_files/preprocessed_raster_data.csv

@@ -14,7 +14,6 @@ I used ChatGPT in a relatively significant way over the course of the project. A
  * The final file RDM from CNN Layer2 worked through my understanding of RDM's. I asked questions like: 
     * can you give me an example of what an rdm is calculating
     * wait so what happens if the size of the matrices arent the same?
-    * 
     * "I have neural data from a 34 neurons of a macaque free-viewing an image in the form 
     img      n_1, n_2, ... n_34  
     img_01 0 1 0 1 

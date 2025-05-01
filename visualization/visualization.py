@@ -30,4 +30,4 @@ def plot_normalized_neuron_heatmap(csv_path, output_path=None):
 if __name__ == "__main__":
     # Example usage:
     csv_path = "neuron_maps/V1/sub-An_ses-20220105T173929_matrix_neurons_by_image.csv"  # <-- adjust if needed
-    plot_normalized_neuron_heatmap(csv_path)
+    plot_normalized_neuron_heatmap(csv_path, "visualization/sub-An_ses-20220105T173929_matrix_neurons_by_image")

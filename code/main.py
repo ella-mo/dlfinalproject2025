@@ -13,10 +13,6 @@ from scipy.spatial.distance import pdist, squareform
 from scipy.stats import spearmanr
 import pandas as pd
 
-# Get all data
-#all_inputs, all_labels = get_data(r'C:\Users\Taher Vahanvaty\Documents\csci1470\dlfinalproject2025\preprocessing\cifar_batch_graypad_trial.pkl')
-
-<<<<<<< Updated upstream
 def plot_rdm(rdm, title="Representational Dissimilarity Matrix", figsize=(6,6), cmap="viridis"):
     plt.figure(figsize=figsize)
     sns.heatmap(rdm, cmap=cmap, square=True, cbar=True, 
@@ -45,11 +41,8 @@ def compare_rdms(rdm1, rdm2):
     return corr
 
 
-
-all_inputs, all_labels, all_filenames = get_data("../preprocessing/cifar_batch_graypad_trial.pkl")
-=======
-all_inputs, all_labels = get_data("../cifar_batch_graypad_trial.pkl")
->>>>>>> Stashed changes
+# get data
+all_inputs, all_labels, all_filenames = get_data("../preprocessing/cifar_batch_graypad.pkl")
 
 # Split into train/test
 train_inputs, test_inputs, train_labels, test_labels, train_filenames, test_filenames = train_test_split(

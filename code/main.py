@@ -19,7 +19,7 @@ def plot_rdm(rdm, title="Representational Dissimilarity Matrix", figsize=(6,6), 
                 xticklabels=False, yticklabels=False)
     plt.title(title)
     plt.tight_layout()
-    plt.show()
+    plt.savefig(title+".png", dpi=300, bbox_inches="tight")
 
 
 def compute_rdm(features, metric="correlation"):
@@ -148,10 +148,10 @@ neural_features = np.nan_to_num(neural_features, nan=0.0)
 
 # Compute RDMs
 cnn_rdm = compute_rdm(cnn_features_matched, metric="correlation")
-plot_rdm(cnn_rdm, title="CNN RDM (matched to neural data)")
+plot_rdm(cnn_rdm, title="HMO_RDM")
 
 neural_rdm = compute_rdm(neural_features, metric="correlation")
-plot_rdm(neural_rdm, title="Neural RDM (matched to neural data)")
+plot_rdm(neural_rdm, title="Neural_RDM")
 
 print("CNN RDM min/max:", np.min(cnn_rdm), np.max(cnn_rdm))
 print("Neural RDM min/max:", np.min(neural_rdm), np.max(neural_rdm))

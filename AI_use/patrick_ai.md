@@ -1,0 +1,2 @@
+Patrick AI:
+Our original article is very technical, especially when it comes to the biology aspects which I am not comfortable with. I used AI to help me understand the article and the supplementary material. I also used AI to help me understand the structure and training of the HMO model. It gave me some suggestions on certain code details like how to choose random hyperparameters, but most of it is syntactical. There were a few very strange errors that I used GPT to help debug.

@@ -38,6 +38,10 @@ The code in this folder was used primarily to explore the data and the code from
 2. raw_images_extractions.py: uses extracted_external_file.csv to create raw_images file, which extracts the images from Stimuli.zip 
 3. face_rois_calculation.py: uses retinaface to categorize each of the extracted images as face vs non face and calculate ROIs. the calculations are held in face_rois_from_retinaface.csv
 4. compute_face_selective_neurons: computes face selectivity of neurons using face_rois_from_retinaface.csv and preprocessed_raster_data.csv
+5. check_coverage.py: file checks the coverage of the neural data in the test_dataset.
+6. combine_neural_csv.py: file combines monkey session neural data into a single .csv file
+7. extract pareidolia.py: takes pareidolia and adds it to the face.csv list for labelling
+8. label_extration.py: preprocesses images, pads and changes the aspect ratio, then puts them in a .pkl file with their correspondong label.
 
 ## rasters
 This folder holds extracted data from the .nwb files from 000628, created from raster_extractions.py in /neuron_activations.

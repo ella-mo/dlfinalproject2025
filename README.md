@@ -12,12 +12,19 @@ This folder holds a few .nwb files from the data paper in sub-folders, which are
 ## AI_use
 contains AI use transcripts
 ## code
+This folder contains all of our non-preprocessing code:
+1. cnn_module.py is the file that contains the CNNModule class, which is put into each layer in the HMO.
+2. hmo_model.py is the main file for our HMOModel class.
+3. neurons.py contains our r2 analysis of the HMO model/neuron data.
+4. train.py is the file in which the 200 CNN modules are initialized and trained.
+5. main.py is how you run the file and also contains analysis for the RDMs.
 
 
 ## fixations
 This folder holds extracted data from the .nwb files from 000628, created from fixation_extractions.py in /neuron_activations.
 
 ## models
+Intermediate folder for saving models (too large to commit).
 
 ## neuron_activations
 The code creates normalized maps that map the average firing rate of a neuron during an image showing. Note: future use of this code should combine normalize_neuron_maps.py and main.py to calculate the average firing rate of the neuron in a single run. 

@@ -4,3 +4,4 @@
 /preprocessing/raw_images
 /preprocessing/preprocessed_raster_data.csv
 /preprocessing/converted_images
+/preprocessing/.DS_Store

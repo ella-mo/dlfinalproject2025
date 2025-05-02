@@ -138,6 +138,7 @@ for batch_images, batch_labels, batch_filenames in test_dataset:
     matched_filenames.extend(batch_filenames)
 
 cnn_features_matched = np.vstack(features)
+np.save(cnn_features_matched, "cnn_features_matched.npy")
 
 # Filter neural data using matched filenames
 filtered_df = neural_data_df.set_index('image_path').loc[matched_filenames].reset_index()
